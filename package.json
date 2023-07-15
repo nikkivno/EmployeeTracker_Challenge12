@@ -1,0 +1,14 @@
+{
+  "name": "employeetracker_challenge12",
+  "version": "1.0.0",
+  "description": "Creating an employee tracker using Node.js, Inquirer and MySql",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "inquirer": "^8.2.4"
+  }
+}
