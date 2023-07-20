@@ -40,13 +40,13 @@ inquirer.prompt ([
 .then ((answers) => {
     switch(answers.options) {
         case 'View All Departments':
-            console.log ('View Department Table')
+            viewDepartments();
         break;
         case 'View All Roles':
-            console.log('View Role Table')
+            viewroles();
         break;
         case 'View All Employees':
-            console.log ('View Employee Table')
+            viewEmployees();
         break;
         case 'Add a Department':
             console.log ('Department Added')
@@ -64,4 +64,29 @@ inquirer.prompt ([
 };
 
 options()
+
+function viewDepartments() {
+    connection.query('SELECT `*` FROM `department`', function (err, results){
+        if (err) throw err;
+        console.table(results);
+        options();
+    });
+}
+
+function viewRoles() {
+    connection.query('SELECT `*` FROM `roles`', function (err, results){
+        if (err) throw err;
+        console.table(results);
+        options();
+    });
+}
+
+function viewEmployees() {
+    connection.query('SELECT `*` FROM `employee`', function (err, results){
+        if (err) throw err;
+        console.table(results);
+        options();
+    });
+}
+
 
