@@ -3,13 +3,12 @@ const mysql = require('mysql2');
 require('dotenv').config();
 
 const connection = mysql.createConnection(
-    process.env.DB_Username,
-    process.env.DB_Password,
-    process.env.DB_Name,
-        {
-            host: 'localhost',
-            dialect: 'mysql',
-            port: 3306
+         {
+            host: '127.0.0.1',
+            port: 3306,
+            user: 'root',
+            password: process.env.DB_Password,
+            database: "EmployeeTracker_Challenge12_db"
         });
 
 connection.connect();
@@ -21,9 +20,10 @@ connection.query('SELECT 1 + 1 AS solution', function (error, results, fields) {
    
   connection.end();
 
+function options() { 
 inquirer.prompt ([
     {
-        type: "rawlist",
+        type: "list",
         message:"Please choose one of the following:",
         choices: [
             'View All Departments',
@@ -37,3 +37,31 @@ inquirer.prompt ([
         name: "Options"
     }
 ])
+.then ((answers) => {
+    switch(answers.options) {
+        case 'View All Departments':
+            console.log ('View Department Table')
+        break;
+        case 'View All Roles':
+            console.log('View Role Table')
+        break;
+        case 'View All Employees':
+            console.log ('View Employee Table')
+        break;
+        case 'Add a Department':
+            console.log ('Department Added')
+        break;
+        case 'Add a Role':
+            console.log ('Role added')
+        break;
+        case 'Add an Employee':
+            console.log ('Employee added')
+        break;
+        case 'Update an Employee Role':
+            console.log ('Employee Role Updated')
+    }
+})
+};
+
+options()
+
