@@ -51,16 +51,16 @@ inquirer.prompt ([
             viewEmployees();
         break;
         case 'Add a Department':
-            console.log ('Department Added')
+            addDepartment();
         break;
         case 'Add a Role':
-            console.log ('Role added')
+            addRole();
         break;
         case 'Add an Employee':
-            console.log ('Employee added')
+            addEmployee();
         break;
         case 'Update an Employee Role':
-            console.log ('Employee Role Updated')
+            updateRole();
     }
 })
 };
@@ -90,6 +90,43 @@ function viewEmployees() {
         console.table(results);
         options();
     });
+}
+
+
+function addDepartment() {
+    inquirer.prompt([
+        {
+            type: "input",
+            message: "Entet department ID:",
+            name: 'departmentID'
+        },
+        {
+            type: "input",
+            message: "Enter the name of the new department:",
+            name: "departmentName"
+        }
+    ])
+    .then((answers) => {
+        const newID = answers.departmentID;
+        const newDepartment = answers.departmentName;
+        connection.query('INSERT INTO department (id, name) VALUES (?, ?)', [newID, newDepartment], function (err, result) {
+            if (err) throw err;
+            console.log("New department added:", newDepartment);
+            options();
+    });
+    });
+} 
+
+function addRole() {
+
+}
+
+function addEmployee() {
+
+}
+
+function updateRole() {
+
 }
 
 
