@@ -154,7 +154,45 @@ function addRole() {
 } 
 
 function addEmployee() {
-
+    inquirer.prompt ([
+        {
+            type: 'input',
+            message: 'Please enter employee ID:',
+            name: 'employeeID'
+        },
+        {
+            type: 'input',
+            message: 'Please Enter Employee First Name:',
+            name: 'employeeFirstName'
+        },
+        {
+            type: 'input',
+            message: 'Please Enter Employee Last Name:',
+            name: 'employeeLastName'
+        },
+        {
+            type: 'input',
+            message: 'Please Enter Employee Role ID:',
+            name: 'roleID'
+        },
+        {
+            type: 'input',
+            message: 'Please Enter The Manager ID:',
+            name: 'managerID'
+        }
+    ])
+    .then ((answers) => {
+        const employeeID = answers.employeeID;
+        const firstName = answers.employeeFirstName;
+        const lastName = answers.employeeLastName;
+        const roleID = answers.roleID;
+        const manager = answers.managerID;
+        connection.query('INSERT INTO employee (id, first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?, ?)', [employeeID, firstName, lastName, roleID, manager], function (err, results) {
+            if (err) throw err;
+            console.log("New employee added:", firstName);
+            options();
+        });
+    });
 }
 
 function updateRole() {
