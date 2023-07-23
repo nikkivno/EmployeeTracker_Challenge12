@@ -97,7 +97,7 @@ function addDepartment() {
     inquirer.prompt([
         {
             type: "input",
-            message: "Entet department ID:",
+            message: "Enter a department ID:",
             name: 'departmentID'
         },
         {
@@ -118,8 +118,40 @@ function addDepartment() {
 } 
 
 function addRole() {
-
-}
+    inquirer.prompt([
+        {
+            type: "input",
+            message: "Enter a role ID:",
+            name: 'roleID'
+        },
+        {
+            type: "input",
+            message: "Enter the name of the new role:",
+            name: "roleName"
+        },
+        {
+            type: 'input',
+            message: "Please Enter the salary of the position:",
+            name: "salary"
+        },
+        {
+            type: 'input',
+            message: "Please enter the department ID:",
+            name: "departmentID"
+        }
+    ])
+    .then((answers) => {
+        const roleID = answers.roleID;
+        const roleName = answers.roleName;
+        const salary = answers.salary;
+        const departmentID = answers.departmentID;
+        connection.query('INSERT INTO role (id, title, salary, department_id) VALUES (?, ?, ?, ?)', [roleID, roleName, salary, departmentID], function (err, result) {
+            if (err) throw err;
+            console.log("New role added:", roleName);
+            options();
+    });
+    });
+} 
 
 function addEmployee() {
 
