@@ -8,17 +8,19 @@ const connection = mysql.createConnection(
             port: 3306,
             user: 'root',
             password: process.env.DB_Password,
-            database: "EmployeeTracker_Challenge12_db"
+            database: "EmployeeTracker_db"
         });
 
-connection.connect();
+connection.connect(function(err) {
+    if (err) throw err;
+});
  
 connection.query('SELECT 1 + 1 AS solution', function (error, results, fields) {
     if (error) throw error;
     console.log('The solution is: ', results[0].solution);
   });
    
-  connection.end();
+//   connection.end();
 
 function options() { 
 inquirer.prompt ([
@@ -38,12 +40,12 @@ inquirer.prompt ([
     }
 ])
 .then ((answers) => {
-    switch(answers.options) {
+    switch(answers.Options) {
         case 'View All Departments':
             viewDepartments();
         break;
         case 'View All Roles':
-            viewroles();
+            viewRoles();
         break;
         case 'View All Employees':
             viewEmployees();
@@ -66,7 +68,8 @@ inquirer.prompt ([
 options()
 
 function viewDepartments() {
-    connection.query('SELECT `*` FROM `department`', function (err, results){
+    console.log('in View Departments')
+    connection.query('SELECT * FROM `department`', function (err, results){
         if (err) throw err;
         console.table(results);
         options();
@@ -74,7 +77,7 @@ function viewDepartments() {
 }
 
 function viewRoles() {
-    connection.query('SELECT `*` FROM `roles`', function (err, results){
+    connection.query('SELECT * FROM `role`', function (err, results){
         if (err) throw err;
         console.table(results);
         options();
@@ -82,7 +85,7 @@ function viewRoles() {
 }
 
 function viewEmployees() {
-    connection.query('SELECT `*` FROM `employee`', function (err, results){
+    connection.query('SELECT * FROM `employee`', function (err, results){
         if (err) throw err;
         console.table(results);
         options();
