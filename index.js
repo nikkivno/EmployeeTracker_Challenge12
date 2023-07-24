@@ -106,12 +106,32 @@ function viewRoles() {
 }
 
 function viewEmployees() {
-    connection.query('SELECT * FROM `employee`', function (err, results){
+    const sqlQuery = 
+    `SELECT id, first_name,last_name, manager_id FROM employee
+    JOIN title on employee.role_id = role.title`;
+
+    connection.query(sqlQuery, (err, results) => {
         if (err) throw err;
-        console.table(results);
-        options();
-    });
+    
+        // Process and display the results
+        console.log('Employee data with roles:');
+        console.log(results);
+    
+        // Close the database connection (optional, if the connection is not needed further)
+        connection.end((err) => {
+          if (err) throw err;
+          console.log('Database connection closed.');
+        });
+      });
 }
+
+// function viewEmployees() {
+//     connection.query('SELECT * FROM `employee`', function (err, results){
+//         if (err) throw err;
+//         console.table(results);
+//         options();
+//     });
+// }
 
 
 async function addDepartment() {
