@@ -8,7 +8,7 @@ const connection = mysql.createConnection(
             port: 3306,
             user: 'root',
             password: process.env.DB_Password,
-            database: "EmployeeTracker_db"
+            database: "Employee_Tracker_db"
         });
 
 connection.connect(function(err) {
@@ -180,11 +180,6 @@ function addEmployee() {
     inquirer.prompt ([
         {
             type: 'input',
-            message: 'Please enter employee ID:',
-            name: 'employeeID'
-        },
-        {
-            type: 'input',
             message: 'Please Enter Employee First Name:',
             name: 'employeeFirstName'
         },
@@ -205,12 +200,11 @@ function addEmployee() {
         }
     ])
     .then ((answers) => {
-        const employeeID = answers.employeeID;
         const firstName = answers.employeeFirstName;
         const lastName = answers.employeeLastName;
         const roleID = answers.roleID;
         const manager = answers.managerID;
-        connection.query('INSERT INTO employee (id, first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?, ?)', [employeeID, firstName, lastName, roleID, manager], function (err, results) {
+        connection.query('INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)', [firstName, lastName, roleID, manager], function (err, results) {
             if (err) throw err;
             console.log("New employee added:", firstName);
             options();
