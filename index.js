@@ -60,7 +60,28 @@ inquirer.prompt ([
             addEmployee();
         break;
         case 'Update an Employee Role':
-            updateRole();
+            updateRole((employeeNames) => {
+                inquirer.prompt ([
+                    {
+                        type: 'list',
+                        message: 'Select the Employee whose role you would like to update:',
+                        choices: employeeNames,
+                        name: 'selectedEmployee'
+                    },
+                    {
+                        type: 'input',
+                        message: 'Enter new role ID:',
+                        name: 'newRole'
+                    }
+                ])
+                .then((answers) => {
+                    updateEmployeeJobTitle(answers.selectedEmployee, answers.newRole);
+                })
+                .catch((error) => {
+                    console.error('Error occured:', error);
+                });
+            });
+            break;
     }
 })
 };
@@ -197,16 +218,26 @@ function addEmployee() {
     });
 }
 
-function updateRole() {
-    inquirer.prompt ([
-        {
-            type: 'list',
-            message: 'Select the role you would like to update:',
-            choices: [
-                
-            ]
-        }
-    ])
+function updateRole(callback) {
+    const query = 'SELECT first_name FROM employee'
+
+    connection.query(query, (err, results) => {
+        if (err) throw err;
+
+        const employeeNames = results.map((result) => result.first_name);
+        callback(employeeNames);
+    });
+}
+
+function updateEmployeeJobTitle (selectedEmployee, newRole) {
+    const updateQuery = 'UPDATE employee SET role_id = ? WHERE first_name = ?';
+
+    connection.query(updateQuery, [newRole, selectedEmployee], (err, reuslt) => {
+        if (err) throw err;
+
+        console.log(`Roll ID updated for ${selectedEmployee}`);
+        options();
+    })
 }
 
 
