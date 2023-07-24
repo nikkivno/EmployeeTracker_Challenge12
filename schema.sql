@@ -3,7 +3,7 @@ create database EmployeeTracker_db;
 use EmployeeTracker_db;
 
 create table department (
-    id int not null,
+    id int not null auto_increment,
     name varchar(30),
     primary key (id)
 );
@@ -19,7 +19,7 @@ create table role (
 );
 
 create table employee (
-    id int, 
+    id int auto_increment, 
     first_name varchar(30),
     last_name varchar(30),
     role_id int not null,

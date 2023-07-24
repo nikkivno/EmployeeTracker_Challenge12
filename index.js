@@ -93,29 +93,31 @@ function viewEmployees() {
 }
 
 
-function addDepartment() {
-    inquirer.prompt([
+async function addDepartment() {
+    try {
+      const answers = await inquirer.prompt([
         {
-            type: "input",
-            message: "Enter a department ID:",
-            name: 'departmentID'
+          type: "input",
+          message: "Enter the name of the new department:",
+          name: "departmentName",
         },
-        {
-            type: "input",
-            message: "Enter the name of the new department:",
-            name: "departmentName"
+      ]);
+  
+      const departmentName = answers.departmentName;
+      
+      connection.query(
+        'INSERT INTO department (name) VALUES (?)', [departmentName], function (err, result) {
+          if (err) throw err;
+          console.log('New department added: ', departmentName);
+          options();
         }
-    ])
-    .then((answers) => {
-        const newID = answers.departmentID;
-        const newDepartment = answers.departmentName;
-        connection.query('INSERT INTO department (id, name) VALUES (?, ?)', [newID, newDepartment], function (err, result) {
-            if (err) throw err;
-            console.log("New department added:", newDepartment);
-            options();
-    });
-    });
-} 
+      );
+    } catch (error) {
+      console.error("Error:", error);
+      options();
+    }
+};
+
 
 function addRole() {
     inquirer.prompt([
@@ -196,7 +198,15 @@ function addEmployee() {
 }
 
 function updateRole() {
-
+    inquirer.prompt ([
+        {
+            type: 'list',
+            message: 'Select the role you would like to update:',
+            choices: [
+                
+            ]
+        }
+    ])
 }
 
 
