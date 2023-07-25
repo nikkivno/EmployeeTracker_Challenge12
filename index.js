@@ -24,7 +24,7 @@ connection.query('SELECT 1 + 1 AS solution', function (error, results, fields) {
 
 function options() { 
     const data = {};
-    
+
 inquirer.prompt ([
     {
         type: "list",
@@ -83,7 +83,7 @@ inquirer.prompt ([
                         name: 'selectedEmployee'
                     },
                     {
-                        type: 'input',
+                        type: 'list',
                         message: 'Choose new role:',
                         choices: data.roleChoices,
                         name: 'newRole'
