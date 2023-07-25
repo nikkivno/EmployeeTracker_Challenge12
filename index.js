@@ -23,6 +23,8 @@ connection.query('SELECT 1 + 1 AS solution', function (error, results, fields) {
 //   connection.end();
 
 function options() { 
+    const data = {};
+    
 inquirer.prompt ([
     {
         type: "list",
@@ -60,17 +62,30 @@ inquirer.prompt ([
             addEmployee();
         break;
         case 'Update an Employee Role':
-            updateRole((employeeNames) => {
+            updateRole(data, (data) => {
+                if (data.employeeNames.length === 0) {
+                    console.log('No employees available. Please add employees first.');
+                    options();
+                    return;
+                  }
+        
+                  if (data.roleChoices.length === 0) {
+                    console.log('No roles available. Please add roles first.');
+                    options();
+                    return;
+                  }
+
                 inquirer.prompt ([
                     {
                         type: 'list',
                         message: 'Select the Employee whose role you would like to update:',
-                        choices: employeeNames,
+                        choices: data.employeeNames,
                         name: 'selectedEmployee'
                     },
                     {
                         type: 'input',
-                        message: 'Enter new role ID:',
+                        message: 'Choose new role:',
+                        choices: data.roleChoices,
                         name: 'newRole'
                     }
                 ])
@@ -229,21 +244,44 @@ function addEmployee() {
     });
 }
 
-function updateRole(callback) {
-    const query = 'SELECT first_name FROM employee'
+function updateRole(data, callback) {
+    const employeeQuery = 'SELECT first_name FROM employee';
+    const roleQuery = 'SELECT id, title FROM role';
 
-    connection.query(query, (err, results) => {
-        if (err) throw err;
+   data.employeeNames = [];
+   data.roleChoices = [];
 
-        const employeeNames = results.map((result) => result.first_name);
-        callback(employeeNames);
-    });
-}
+    connection.query(employeeQuery, (err, employeeResults) => {
+        if (err) {
+            console.error('Error fetching employee data:', err);
+            return;
+          }
+
+        data.employeeNames = employeeResults.map((result) => result.first_name);
+
+        connection.query(roleQuery, (err, roleResults) => {
+            if (err) {
+                console.error('Error fetching role data:', err);
+                return;
+              }
+      
+            data.roleChoices = roleResults.map((result) => ({
+              value: result.id,
+              name: result.title,
+            }));
+    
+            callback(data);
+          });
+        });
+      }
+        
+
+
 
 function updateEmployeeJobTitle (selectedEmployee, newRole) {
     const updateQuery = 'UPDATE employee SET role_id = ? WHERE first_name = ?';
 
-    connection.query(updateQuery, [newRole, selectedEmployee], (err, reuslt) => {
+    connection.query(updateQuery, [newRole, selectedEmployee], (err, result) => {
         if (err) throw err;
 
         console.log(`Roll ID updated for ${selectedEmployee}`);
