@@ -26,6 +26,8 @@ Note: Make sure that you have npm packages Inquirer and MySql 2 installed as wel
 
 ## Examples <a id='examples'></a>
 
+[Walkthrough Video](https://drive.google.com/file/d/1DaBz8NyNZOoOMHxuAP1A0UgR-uqsXKD5/view?usp=sharing)
+
 Main Menu
 ![Main Menu](/assets/images/menu.png)
 
