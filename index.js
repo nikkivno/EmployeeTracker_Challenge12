@@ -103,7 +103,7 @@ function viewRoles() {
     `SELECT role.id, title, department.name AS department, salary
     FROM role
     LEFT JOIN department
-    ON role.department_id = department.name`;
+    ON role.department_id = department.id`;
 
     connection.query(sqlQuery, (err, results) => {
         if (err) throw err;
