@@ -28,13 +28,13 @@ inquirer.prompt ([
         type: "list",
         message:"Please choose one of the following:",
         choices: [
-            'View All Departments',
-            'View All Roles',
             'View All Employees',
-            'Add a Department',
-            'Add a Role',
             'Add an Employee',
-            'Update an Employee Role'
+            'Update an Employee Role',
+            'View All Roles',
+            'Add a Role',
+            'View All Departments',
+            'Add a Department'
         ],
         name: "Options"
     }
@@ -113,9 +113,12 @@ function viewEmployees() {
 
     connection.query(sqlQuery, (err, results) => {
         if (err) throw err;
-          options();
+        console.table(results);
+        options();
         });
       };
+
+
 
 async function addDepartment() {
     try {
